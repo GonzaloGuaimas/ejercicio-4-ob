@@ -1,48 +1,35 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import randomcolor from 'randomcolor'
 
-const SquareDiv = ({style, mouseOver, onClick}) => {
-    return (<div onMouseOver={mouseOver} mouseOver={mouseOver} onClick={onClick} style={style}/>)
-  }
-
 const Example = () => {
+  const [color, setColor] = useState('#000000')
 
-    const [action, setAction] = useState()
   const initStyle = {
-    backgroundColor: 'black',
+    backgroundColor: color,
     width: '255px',
     height: '255px'
   }
-  let mouseOverStyle = {
-    backgroundColor: randomcolor(),
-    width: '255px',
-    height: '255px'
+  var interval = null
+  const onChangeColor = () => {
+    interval = setInterval(() => {
+        setColor(randomcolor())
+    }, 500);
   }
-
-
-  const mouseOver = () => {
-    console.log('asd')
-    setAction('mouseOver')
+  const onStopChangeColor = () => {
+    clearInterval(interval);
   }
-
-  let Square
-
-  switch(action){
-    case 'mouseOver':
-      Square = <SquareDiv onClick={mouseOver} mouseOver={mouseOver} style={mouseOverStyle}/>
-      break
-    case 'dobleClick':
-      Square = <SquareDiv onClick={mouseOver} mouseOver={mouseOver} style={initStyle}/>
-      break
-    default:
-      Square = <SquareDiv onClick={mouseOver} mouseOver={mouseOver} style={initStyle}/>
-      break
+  const onDoubleClickChangeColor = () => {
+    clearInterval(interval);
   }
 
   return (
-    <div>
-         {Square}
+    <div 
+        onMouseOver={onChangeColor}
+        onMouseLeave={onStopChangeColor}
+        onDoubleClick={onDoubleClickChangeColor}
+        style={initStyle}
+        >
     </div>
   )
 }
